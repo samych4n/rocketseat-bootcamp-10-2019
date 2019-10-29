@@ -15,9 +15,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const User_1 = require("./app/models/User");
 const UserController_1 = __importDefault(require("./app/controllers/UserController"));
+const SessionController_1 = __importDefault(require("./app/controllers/SessionController"));
 const routes = express_1.Router();
 exports.routes = routes;
 routes.post('/users', UserController_1.default.store);
+routes.post('/sessions', SessionController_1.default.store);
+routes.put('/users', UserController_1.default.update);
 routes.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const user = yield User_1.User.create({
         name: 'Samuel Costa',

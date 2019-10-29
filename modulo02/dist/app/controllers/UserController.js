@@ -20,6 +20,11 @@ class UserController {
             return res.json({ id, name, email, provider });
         });
     }
+    update(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return res.json(true);
+        });
+    }
 }
 exports.default = new UserController();
 //# sourceMappingURL=UserController.js.map
