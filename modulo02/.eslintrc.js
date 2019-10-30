@@ -22,7 +22,7 @@ module.exports = {
   settings:{
     "import/resolver": {
       node: {
-        extensions: [".js", ".jsx", ".ts", ".tsx"]
+        extensions: [".js", ".jsx", ".ts", ".tsx",".d.ts"]
       }
     }
   },
@@ -32,6 +32,9 @@ module.exports = {
     "import/prefer-default-export":"off",
     //"no-param-reassingn":"off",
     "camelcase":"off",
-	"no-unused-vars":"off",
+    "no-unused-vars":"off",
+    "no-shadow":"off",
+    "no-use-before-define":"off"
+
   },
 };

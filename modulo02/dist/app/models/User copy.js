@@ -35,9 +35,6 @@ class User extends sequelize_1.Model {
             }
         }));
     }
-    static associate(models) {
-        this.belongsTo(models.File, { foreignKey: 'avatar_id', as: 'avatar' });
-    }
 }
 exports.User = User;
-//# sourceMappingURL=User.js.map
+//# sourceMappingURL=User copy.js.map

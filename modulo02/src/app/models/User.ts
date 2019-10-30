@@ -1,7 +1,8 @@
-import Sequelize, { Model, DataTypes, InitOptions } from 'sequelize';
+import { Model, DataTypes, Sequelize } from 'sequelize';
 import bcrypt from 'bcryptjs';
+import { customModel } from '../../types';
 
-export class User extends Model<User, User> {
+export class User extends Model {
 	public id!: number;
 
 	public name!: string;
@@ -20,7 +21,7 @@ export class User extends Model<User, User> {
 		return bcrypt.compare(password, this.password_hash);
 	}
 
-	public static initialize(sequelize) {
+	public static initialize(sequelize: Sequelize) {
 		this.init(
 			{
 				name: DataTypes.STRING,
@@ -39,5 +40,9 @@ export class User extends Model<User, User> {
 				data.password_hash = await bcrypt.hash(data.password, 8);
 			}
 		});
+	}
+
+	public static associate(models: any) {
+		this.belongsTo(models.File, { foreignKey: 'avatar_id', as: 'avatar' });
 	}
 }

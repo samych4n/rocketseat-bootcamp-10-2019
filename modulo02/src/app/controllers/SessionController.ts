@@ -1,11 +1,17 @@
 import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
+import * as Yup from 'yup';
 import authConfig from '../../config/auth';
 import { User } from '../models/User';
 
 class SessionController {
 	async store(req: Request, res: Response) {
 		const { email, password } = req.body;
+
+		const schema = Yup.object().shape({
+			email: Yup.string().email(),
+			password: Yup.string().strict(true),
+		});
 
 		const user = await User.findOne({ where: { email } });
 		if (!user) {
