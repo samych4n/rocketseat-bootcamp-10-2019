@@ -115,7 +115,7 @@ class AppointmentController {
 		if (invalidDateToCancel)
 			return res.status(401).json({ error: 'cannot cancel anymore' });
 
-		// appointment.update({ canceled_at: new Date() });
+		appointment.update({ canceled_at: new Date() });
 		await Mail.sendMail({
 			to: `${appointment.provider.name}<${appointment.provider.email}>`,
 			subject: 'Agendamento Cancelado',

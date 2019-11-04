@@ -119,7 +119,7 @@ class AppointmentController {
             const invalidDateToCancel = date_fns_1.isBefore(date_fns_1.subHours(appointment.date, 2), new Date());
             if (invalidDateToCancel)
                 return res.status(401).json({ error: 'cannot cancel anymore' });
-            // appointment.update({ canceled_at: new Date() });
+            appointment.update({ canceled_at: new Date() });
             yield Mail_1.default.sendMail({
                 to: `${appointment.provider.name}<${appointment.provider.email}>`,
                 subject: 'Agendamento Cancelado',
