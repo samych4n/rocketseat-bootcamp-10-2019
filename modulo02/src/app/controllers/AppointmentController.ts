@@ -6,7 +6,8 @@ import { Appointment } from '../models/Appointment';
 import { User } from '../models/User';
 import { File } from '../models/File';
 import notifications from '../schemas/Notification';
-import Mail from '../../lib/Mail';
+import Queue from '../../lib/Queue';
+import cancellationMail from '../jobs/cancellationMail';
 
 class AppointmentController {
 	async index(req: Request, res: Response) {
@@ -103,6 +104,7 @@ class AppointmentController {
 			where: { id, user_id: res.locals.userId, canceled_at: null },
 			include: [
 				{ model: User, as: 'provider', attributes: ['name', 'email'] },
+				{ model: User, as: 'user', attributes: ['name', 'email'] },
 			],
 		});
 		if (!appointment)
@@ -116,11 +118,7 @@ class AppointmentController {
 			return res.status(401).json({ error: 'cannot cancel anymore' });
 
 		appointment.update({ canceled_at: new Date() });
-		await Mail.sendMail({
-			to: `${appointment.provider.name}<${appointment.provider.email}>`,
-			subject: 'Agendamento Cancelado',
-			text: 'Você tem um novo cancelamento',
-		});
+		Queue.add(cancellationMail.key, { appointment });
 		return res.json(appointment);
 	}
 }

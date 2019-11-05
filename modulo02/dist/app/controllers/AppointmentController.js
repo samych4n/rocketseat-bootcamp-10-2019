@@ -26,7 +26,8 @@ const Appointment_1 = require("../models/Appointment");
 const User_1 = require("../models/User");
 const File_1 = require("../models/File");
 const Notification_1 = __importDefault(require("../schemas/Notification"));
-const Mail_1 = __importDefault(require("../../lib/Mail"));
+const Queue_1 = __importDefault(require("../../lib/Queue"));
+const cancellationMail_1 = __importDefault(require("../jobs/cancellationMail"));
 class AppointmentController {
     index(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -112,6 +113,7 @@ class AppointmentController {
                 where: { id, user_id: res.locals.userId, canceled_at: null },
                 include: [
                     { model: User_1.User, as: 'provider', attributes: ['name', 'email'] },
+                    { model: User_1.User, as: 'user', attributes: ['name', 'email'] },
                 ],
             });
             if (!appointment)
@@ -120,11 +122,7 @@ class AppointmentController {
             if (invalidDateToCancel)
                 return res.status(401).json({ error: 'cannot cancel anymore' });
             appointment.update({ canceled_at: new Date() });
-            yield Mail_1.default.sendMail({
-                to: `${appointment.provider.name}<${appointment.provider.email}>`,
-                subject: 'Agendamento Cancelado',
-                text: 'Você tem um novo cancelamento',
-            });
+            Queue_1.default.add(cancellationMail_1.default.key, { appointment });
             return res.json(appointment);
         });
     }
