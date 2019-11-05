@@ -14,7 +14,7 @@ class Mail {
 		const { auth, host, port, secure } = mail;
 		this.transport = nodemailer.createTransport({
 			host,
-			port,
+			port: Number(port),
 			auth: auth.user ? auth : null,
 		});
 

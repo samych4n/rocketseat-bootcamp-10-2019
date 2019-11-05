@@ -51,7 +51,7 @@ class AppointmentController {
                         ],
                     },
                 ],
-                attributes: ['id', 'date'],
+                attributes: ['id', 'date', 'past', 'cancelable'],
             });
             res.json(appointments);
         });

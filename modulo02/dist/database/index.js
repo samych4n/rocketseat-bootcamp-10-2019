@@ -9,6 +9,7 @@ const database_1 = __importDefault(require("../config/database"));
 const User_1 = require("../app/models/User");
 const File_1 = require("../app/models/File");
 const Appointment_1 = require("../app/models/Appointment");
+const mongo_1 = __importDefault(require("../config/mongo"));
 const models = [User_1.User, File_1.File, Appointment_1.Appointment];
 class Database {
     constructor() {
@@ -21,7 +22,7 @@ class Database {
         models.forEach(model => model.associate && model.associate(this.connection.models));
     }
     mongo() {
-        this.mongoConnection = mongoose_1.default.connect('mongodb://localhost:27017/gobarber', {
+        this.mongoConnection = mongoose_1.default.connect(mongo_1.default.url, {
             useNewUrlParser: true,
             useFindAndModify: false,
             useUnifiedTopology: true,

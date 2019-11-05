@@ -13,7 +13,7 @@ class Mail {
         const { auth, host, port, secure } = mail_1.default;
         this.transport = nodemailer_1.default.createTransport({
             host,
-            port,
+            port: Number(port),
             auth: auth.user ? auth : null,
         });
         this.configureTempates();
